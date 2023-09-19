@@ -1,0 +1,35 @@
+apiVersion: aiven.io/v1alpha1
+kind: KafkaConnector
+metadata:
+  name: kafka-connector-os
+spec:
+  authSecretRef:
+    name: aiven-token
+    key: token
+
+  project: dev-advocates
+
+  # the Kafka cluster name
+  serviceName: kafka-connect-cloudnative
+
+  # the connector we will be using
+  connectorClass: io.aiven.kafka.connect.opensearch.OpensearchSinkConnector
+
+  userConfig:
+    connection.username: "avnadmin"
+    connection.url: 'https://{{ fromSecret "os-cloudnative" "HOST"}}:{{ fromSecret "os-cloudnative" "PORT" }}'
+    connection.password: '{{ fromSecret "os-cloudnative" "PASSWORD"}}'
+    name: "os_sink"
+    transforms: "transform-1,transform-2"
+    key.ignore: "true"
+    schema.ignore: "true"
+    value.converter: "org.apache.kafka.connect.json.JsonConverter"
+    topics: "dbz_tickets.public.ticket"
+    type.name: "_tickets12"
+    value.converter.schemas.enable: "false"
+    transforms.transform-1.type: "io.debezium.transforms.ExtractNewRecordState"
+    transforms.transform-2.field: "ts_ms"
+    transforms.transform-2.format: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    transforms.transform-2.target.type: "string"
+    transforms.transform-2.type: "org.apache.kafka.connect.transforms.TimestampConverter$Value"
+  

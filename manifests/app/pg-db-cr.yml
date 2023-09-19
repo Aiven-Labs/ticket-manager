@@ -1,0 +1,14 @@
+apiVersion: aiven.io/v1alpha1
+kind: Database
+metadata:
+  name: tickets
+spec:
+  authSecretRef:
+    name: aiven-token
+    key: token
+
+  # the name of the previously created PostgreSQL instance
+  serviceName: pg-cloudnative
+
+  project: dev-advocates
+

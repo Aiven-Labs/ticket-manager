@@ -1,0 +1,24 @@
+apiVersion: aiven.io/v1alpha1
+kind: ServiceIntegration
+metadata:
+  name: service-integration-kafka-connect
+spec:
+
+  # gets the authentication token from the `aiven-token` Secret
+  authSecretRef:
+    name: aiven-token
+    key: token
+
+  project: dev-advocates
+
+  # indicates the type of the integration
+  integrationType: kafka_connect
+
+  sourceServiceName: kafka-cloudnative
+  destinationServiceName: kafka-connect-cloudnative
+
+  kafkaConnect:
+    kafka_connect:
+      group_id: "connect"
+      status_storage_topic: "__connect_status"
+      offset_storage_topic: "__connect_offsets"

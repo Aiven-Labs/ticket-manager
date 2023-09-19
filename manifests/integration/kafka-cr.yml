@@ -1,0 +1,27 @@
+apiVersion: aiven.io/v1alpha1
+kind: Kafka
+metadata:
+  name: kafka-cloudnative
+spec:
+  # gets the authentication token from the `aiven-token` Secret
+  authSecretRef:
+    name: aiven-token
+    key: token
+
+  # outputs the Kafka connection on the `kafka-connection` Secret
+  connInfoSecretTarget:
+    name: kafka-auth
+
+  # add your Project name here
+  project: dev-advocates
+
+  # cloud provider and plan of your choice
+  # you can check all of the possibilities here https://aiven.io/pricing
+  cloudName: google-europe-west1
+  plan: startup-2
+  userConfig:
+    kafka:
+      auto_create_topics_enable: true
+
+
+

@@ -1,0 +1,58 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.quarkus.io/build-timestamp: 2023-09-18 - 09:17:10 +0000
+  labels:
+    app.kubernetes.io/name: ticket-manager
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/managed-by: quarkus
+  name: ticket-manager
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: ticket-manager
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.quarkus.io/build-timestamp: 2023-09-18 - 09:17:10 +0000
+  labels:
+    app.kubernetes.io/managed-by: quarkus
+    app.kubernetes.io/name: ticket-manager
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: ticket-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ticket-manager
+      app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  template:
+    metadata:
+      annotations:
+        app.quarkus.io/build-timestamp: 2023-09-18 - 09:17:10 +0000
+      labels:
+        app.kubernetes.io/managed-by: quarkus
+        app.kubernetes.io/name: ticket-manager
+        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    spec:
+      containers:
+        - image: sebi2706/ticker-manager:1.0
+          imagePullPolicy: Always
+          name: ticket-manager
+          envFrom:
+          - secretRef: 
+             name: pg-connection 
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

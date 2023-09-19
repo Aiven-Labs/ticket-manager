@@ -1,0 +1,41 @@
+apiVersion: aiven.io/v1alpha1
+kind: KafkaConnector
+metadata:
+  name: kafka-connector
+spec:
+  authSecretRef:
+    name: aiven-token
+    key: token
+
+  project: dev-advocates
+
+  # the Kafka cluster name
+  serviceName: kafka-connect-cloudnative
+
+  # the connector we will be using
+  connectorClass: io.debezium.connector.postgresql.PostgresConnector
+
+  userConfig:
+    auto.create: "true"
+    database.server.name: "dbz_tickets"
+    name: "source_ticket"
+    database.hostname: '{{ fromSecret "pg-connection" "PGHOST"}}'
+    database.port: '{{ fromSecret "pg-connection" "PGPORT" }}'
+    database.user: "avnadmin"
+    database.password: '{{ fromSecret "pg-connection" "PGPASSWORD" }}'
+    database.dbname: "tickets"
+    plugin.name: "pgoutput"
+    slot.name: "debezium_slot"
+    publication.name: "debezium_publication"
+    publication.autocreate.mode: "filtered"
+    table.include.list: "public.ticket"
+
+
+
+
+  
+  
+
+  
+  
+  

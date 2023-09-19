@@ -1,0 +1,16 @@
+apiVersion: aiven.io/v1alpha1
+kind: KafkaConnect
+metadata:
+  name: kafka-connect-cloudnative
+spec:
+  # gets the authentication token from the `aiven-token` Secret
+  authSecretRef:
+    name: aiven-token
+    key: token
+
+  # add your Project name here
+  project: dev-advocates
+
+  cloudName: google-europe-west1
+  plan: startup-4
+
